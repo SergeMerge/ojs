@@ -1,0 +1,40 @@
+version: '2'
+services:
+  ojs:
+    build: .
+    ports:
+      - 8001:8000
+    links:
+      - db
+    depends_on:
+      - db
+    volumes:
+      - ./files:/var/ojs_home/files
+    networks:
+      app_net:
+        ipv4_address: 172.19.0.2
+  db:
+    image: postgres
+    ports:
+      - 5672:5672
+    environment:
+      POSTGRES_PASSWORD: ojs
+      POSTGRES_DB: ojs
+      POSTGRES_USER: ojs
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    networks:
+      app_net:
+        ipv4_address: 172.19.0.3
+
+
+
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.19.0.0/16
+        gateway: 172.19.0.1
