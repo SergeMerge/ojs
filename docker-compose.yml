@@ -3,20 +3,19 @@ services:
   ojs:
     build: .
     ports:
-      - 8001:8000
+      - 8001:8081
     links:
       - db
     depends_on:
       - db
+    command: "/bin/sh -c '/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf'"
     volumes:
-      - ./files:/var/ojs_home/files
+      - ./files:/var/www/html/files
     networks:
       app_net:
-        ipv4_address: 172.19.0.2
+        ipv4_address: 172.21.0.2
   db:
-    image: postgres
-    ports:
-      - 5672:5672
+    image: postgres:9.6
     environment:
       POSTGRES_PASSWORD: ojs
       POSTGRES_DB: ojs
@@ -26,8 +25,7 @@ services:
       - ./data:/var/lib/postgresql/data
     networks:
       app_net:
-        ipv4_address: 172.19.0.3
-
+        ipv4_address: 172.21.0.3
 
 
 networks:
@@ -36,5 +34,5 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 172.19.0.0/16
-        gateway: 172.19.0.1
+      - subnet: 172.21.0.0/16
+        gateway: 172.21.0.1
