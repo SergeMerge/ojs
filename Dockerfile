@@ -19,12 +19,12 @@ RUN useradd -m -d $HOME_DIR -s /bin/bash ojs
 
 RUN rm -Rf /var/www/html/
 RUN chown ojs -R /var/www/html
-RUN mkdir /var/www/html/files
-RUN chown ojs -R /var/www/html/files
 RUN chown ojs -R /var/log/nginx
 RUN chown ojs -R /var/lib/nginx
 USER ojs
 RUN git clone https://github.com/Lax/ojs.git $WORK_DIR
+RUN mkdir /var/www/html/files
+RUN chown ojs -R /var/www/html/files
 WORKDIR $WORK_DIR
 RUN git checkout ojs-stable-3_0_2
 RUN git submodule update --init --recursive
