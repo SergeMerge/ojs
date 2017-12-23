@@ -4,6 +4,8 @@ ENV WORK_DIR /var/www/html/
 
 RUN apt-get update -qq \
     && apt-get install -y --no-install-recommends apt-utils zlib1g-dev \
+    && apt-get install zlib1g-dev libxml2-dev -y \
+    && docker-php-ext-install mysqli soap \
     && docker-php-ext-install zip \
     && apt-get install -y supervisor nginx \
     && sed -i 's/^\(\[supervisord\]\)$/\1\nnodaemon=true/' /etc/supervisor/supervisord.conf \
@@ -17,6 +19,8 @@ RUN useradd -m -d $HOME_DIR -s /bin/bash ojs
 
 RUN rm -Rf /var/www/html/
 RUN chown ojs -R /var/www/html
+RUN mkdir /var/www/html/files
+RUN chown ojs -R /var/www/html/files
 RUN chown ojs -R /var/log/nginx
 RUN chown ojs -R /var/lib/nginx
 USER ojs

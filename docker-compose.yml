@@ -5,24 +5,23 @@ services:
     ports:
       - 8001:8081
     links:
-      - db
+      - mysql:db
     depends_on:
-      - db
+      - mysql
     command: "/bin/sh -c '/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf'"
     volumes:
       - ./files:/var/www/html/files
     networks:
       app_net:
         ipv4_address: 172.21.0.2
-  db:
-    image: postgres:9.6
+
+  mysql:
+    image: mysql
     environment:
-      POSTGRES_PASSWORD: ojs
-      POSTGRES_DB: ojs
-      POSTGRES_USER: ojs
-      PGDATA: /var/lib/postgresql/data
-    volumes:
-      - ./data:/var/lib/postgresql/data
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=ojs
+      - MYSQL_USER=ojs
+      - MYSQL_PASSWORD=ojs
     networks:
       app_net:
         ipv4_address: 172.21.0.3
