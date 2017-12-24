@@ -25,14 +25,20 @@ RUN chown ojs -R /var/www/html
 RUN chown ojs -R /var/log/nginx
 RUN chown ojs -R /var/lib/nginx
 USER ojs
-RUN git clone https://github.com/Lax/ojs.git $WORK_DIR
+RUN git clone https://github.com/pkp/ojs.git $WORK_DIR
 RUN mkdir /var/www/html/files
 RUN chown ojs -R /var/www/html/files
 WORKDIR $WORK_DIR
-RUN git checkout ojs-stable-3_0_2
+RUN git checkout ojs-stable-3_1_0
 RUN git submodule update --init --recursive
 COPY config/config.TEMPLATE.inc.php config.inc.php
 RUN cd lib/pkp && composer update
+RUN cd ../..
+RUN cd plugins/paymethod/paypal && composer update
+RUN cd ../../..
+RUN cd plugins/generic/citationStyleLanguage && composer update
+RUN cd ../../..
+RUN npm install && npm run build
 
 # Configure nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
