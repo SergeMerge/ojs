@@ -4,7 +4,8 @@ ENV WORK_DIR /var/www/html/
 
 RUN apt-get update -qq \
     && apt-get install -y --no-install-recommends apt-utils zlib1g-dev \
-    && apt-get install zlib1g-dev libxml2-dev -y \
+    && apt-get install zlib1g-dev libxml2-dev -y libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql \
     && docker-php-ext-install mysqli soap \
     && docker-php-ext-install zip \
     && apt-get install -y supervisor nginx \
@@ -39,7 +40,6 @@ RUN cd ../../..
 RUN cd plugins/generic/citationStyleLanguage && composer update
 RUN cd ../../..
 RUN npm install && npm run build
-
 # Configure nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
 

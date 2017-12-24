@@ -65,7 +65,7 @@ time_format = "%I:%M %p"
 ; Use URL parameters instead of CGI PATH_INFO. This is useful for
 ; broken server setups that don't support the PATH_INFO environment
 ; variable.
-disable_path_info = Off
+disable_path_info = On
 
 ; Use fopen(...) for URL-based reads. Modern versions of dspace
 ; will not accept requests using fopen, as it does not provide a
