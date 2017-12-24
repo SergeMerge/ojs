@@ -17,6 +17,9 @@ RUN apt-get update -qq \
 
 RUN useradd -m -d $HOME_DIR -s /bin/bash ojs
 
+RUN touch /var/log/php-errors.log
+RUN chown ojs /var/log/php-errors.log
+
 RUN rm -Rf /var/www/html/
 RUN chown ojs -R /var/www/html
 RUN chown ojs -R /var/log/nginx
